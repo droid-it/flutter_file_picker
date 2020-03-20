@@ -26,7 +26,7 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
     private final PermissionManager permissionManager;
     private MethodChannel.Result pendingResult;
     private boolean isMultipleSelection = false;
-    private String type;
+    private String[] type;
 
     public FilePickerDelegate(final Activity activity) {
         this(
@@ -150,8 +150,8 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
 
         intent = new Intent(Intent.ACTION_GET_CONTENT);
         final Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath() + File.separator);
-        intent.setDataAndType(uri, this.type);
-        intent.setType(this.type);
+        intent.setDataAndType(uri, "*/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, this.type);
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, this.isMultipleSelection);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
@@ -164,7 +164,7 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
     }
 
     @SuppressWarnings("deprecation")
-    public void startFileExplorer(final String type, final boolean isMultipleSelection, final MethodChannel.Result result) {
+    public void startFileExplorer(final String[] type, final boolean isMultipleSelection, final MethodChannel.Result result) {
 
         if (!this.setPendingMethodCallAndResult(result)) {
             finishWithAlreadyActiveError(result);

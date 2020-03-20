@@ -7,6 +7,7 @@ enum FileType {
   any,
   image,
   video,
+  image_video,
   audio,
   custom,
 }
@@ -78,6 +79,8 @@ class FilePicker {
         return 'AUDIO';
       case FileType.video:
         return 'VIDEO';
+      case FileType.image_video:
+        return 'IMAGE_VIDEO';
       case FileType.any:
         return 'ANY';
       case FileType.custom:

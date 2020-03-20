@@ -62,6 +62,8 @@
         [self resolvePickAudio];
     } else if([call.method isEqualToString:@"IMAGE"]) {
         [self resolvePickImage];
+    } else if([call.method isEqualToString:@"IMAGE_VIDEO"]) {
+           [self resolvePickImageAndVideo];
     } else {
         result(FlutterMethodNotImplemented);
         _result = nil;
@@ -116,6 +118,17 @@
     self.audioPickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
     
     [self.viewController presentViewController:self.audioPickerController animated:YES completion:nil];
+}
+
+- (void) resolvePickImageAndVideo {
+    
+    self.galleryPickerController = [[UIImagePickerController alloc] init];
+    self.galleryPickerController.delegate = self;
+    self.galleryPickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    self.galleryPickerController.mediaTypes = @[(NSString*)kUTTypeMovie, (NSString*)kUTTypeImage, (NSString*)kUTTypeAVIMovie, (NSString*)kUTTypeVideo, (NSString*)kUTTypeMPEG4];
+    self.galleryPickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
+    
+    [self.viewController presentViewController:self.galleryPickerController animated:YES completion:nil];
 }
 
 - (void) resolvePickVideo {

@@ -107,7 +107,7 @@ public class FilePickerPlugin implements MethodChannel.MethodCallHandler, Flutte
     private LifeCycleObserver observer;
     private Activity activity;
     private MethodChannel channel;
-    private static String fileType;
+    private static String[] fileType;
     private static boolean isMultipleSelection = false;
 
     /**
@@ -155,7 +155,7 @@ public class FilePickerPlugin implements MethodChannel.MethodCallHandler, Flutte
 
     }
 
-    private static String resolveType(final String type) {
+    private static String[] resolveType(final String type) {
 
         final boolean isCustom = type.contains("__CUSTOM_");
 
@@ -164,18 +164,20 @@ public class FilePickerPlugin implements MethodChannel.MethodCallHandler, Flutte
             String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
             mime = mime == null ? "unsupported" : mime;
             Log.i(TAG, "Custom file type: " + mime);
-            return mime;
+            return new String[] {mime};
         }
 
         switch (type) {
             case "AUDIO":
-                return "audio/*";
+                return new String[] {"audio/*"};
             case "IMAGE":
-                return "image/*";
+                return new String[] {"image/*"};
             case "VIDEO":
-                return "video/*";
+                return new String[] {"video/*"};
+            case "IMAGE_VIDEO":
+                return new String[] {"video/*", "image/*"};
             case "ANY":
-                return "*/*";
+                return new String[] {"*/*"};
             default:
                 return null;
         }
